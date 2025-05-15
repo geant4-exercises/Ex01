@@ -18,7 +18,6 @@ public:
 private:
 
 
-  G4GeneralParticleSource* particleGun;
 };
 
 #endif
