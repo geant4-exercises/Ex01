@@ -33,6 +33,7 @@
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "SteppingAction.hh"
+#include "StackingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -76,6 +77,9 @@ void ActionInitialization::Build() const
 
   SteppingAction* steppingAction = new SteppingAction(fDetector, eventAction);
   SetUserAction(steppingAction);
+
+  StackingAction* stackingAction = new StackingAction(runAction);
+  SetUserAction(stackingAction);
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

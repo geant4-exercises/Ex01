@@ -47,7 +47,8 @@ RunAction::RunAction(HistoManager* histo)
   fSumEAbs(0.), fSum2EAbs(0.),
   fSumEGap(0.), fSum2EGap(0.),
   fSumLAbs(0.), fSum2LAbs(0.),
-  fSumLGap(0.), fSum2LGap(0.)    
+  fSumLGap(0.), fSum2LGap(0.),
+  nPositrons(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -127,7 +128,12 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
      << " +- "                               << G4BestUnit(rmsLGap,"Length")
      << "\n------------------------------------------------------------\n"
      << G4endl;
-     
+
+  G4cout
+    << "\n n of positrons produced : " << nPositrons
+    << "\n------------------------------------------------------------\n"    
+    << G4endl;
+  
   //save histograms
   //
   fHistoManager->PrintStatistic();

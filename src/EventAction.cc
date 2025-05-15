@@ -45,7 +45,7 @@
 
 EventAction::EventAction(RunAction* run, HistoManager* histo)
 :G4UserEventAction(),
- fRunAct(run),fHistoManager(histo),
+ fRunAction(run),fHistoManager(histo),
  fEnergyAbs(0.), fEnergyGap(0.),
  fTrackLAbs(0.), fTrackLGap(0.),
  fPrintModulo(0)                             
@@ -74,7 +74,7 @@ void EventAction::EndOfEventAction(const G4Event*)
 {
   //accumulates statistic
   //
-  fRunAct->FillPerEvent(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
+  fRunAction->FillPerEvent(fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap);
   
   //fill histograms
   //

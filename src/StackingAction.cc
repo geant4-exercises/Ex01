@@ -23,52 +23,39 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file EventAction.hh
-/// \brief Definition of the EventAction class
 //
-//
-// $Id: EventAction.hh 98241 2016-07-04 16:56:59Z gcosmo $
-//
-// 
+/// \file B3/B3a/src/StackingAction.cc
+/// \brief Implementation of the B3::StackingAction class
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#include "StackingAction.hh"
 
-#ifndef EventAction_h
-#define EventAction_h 1
-
-#include "G4UserEventAction.hh"
-#include "globals.hh"
-
-class RunAction;
-class HistoManager;
+#include "G4NeutrinoE.hh"
+#include "G4Positron.hh"
+#include "G4Track.hh"
+#include "RunAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class EventAction : public G4UserEventAction
+StackingAction::StackingAction(RunAction* rn)
+  : fRunAction(rn)
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track)
 {
-public:
-  EventAction(RunAction*, HistoManager*);
-  virtual ~EventAction() override;
+  // keep primary particle
+  if (track->GetParentID() == 0) return fUrgent;
 
-  virtual void  BeginOfEventAction(const G4Event*) override;
-  virtual void    EndOfEventAction(const G4Event*) override;
-    
-  void AddAbs(G4double de, G4double dl) {fEnergyAbs += de; fTrackLAbs += dl;};
-  void AddGap(G4double de, G4double dl) {fEnergyGap += de; fTrackLGap += dl;};
-    
-private:
-   RunAction*    fRunAction;
-   HistoManager* fHistoManager;
-      
-   G4double  fEnergyAbs, fEnergyGap;
-   G4double  fTrackLAbs, fTrackLGap;
-                     
-   G4int     fPrintModulo;                             
-};
+  // kill secondary neutrino
+  if (track->GetDefinition() == G4NeutrinoE::NeutrinoE())
+    return fKill;
+  else if (track->GetDefinition() == G4Positron::Positron())
+    {
+      fRunAction->AddPositron();
+    }
+  return fUrgent;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif
-
-    

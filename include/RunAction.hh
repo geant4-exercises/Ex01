@@ -56,6 +56,11 @@ public:
     
   void FillPerEvent(G4double, G4double, G4double, G4double); 
 
+  inline void AddPositron(){
+    G4cout<<"nPositrons: "<<nPositrons<<G4endl;
+    nPositrons++;};
+  inline G4int GetNPositrons(){return nPositrons;};
+  
 private:
   HistoManager* fHistoManager;
 
@@ -63,7 +68,9 @@ private:
   G4double fSumEGap, fSum2EGap;
     
   G4double fSumLAbs, fSum2LAbs;
-  G4double fSumLGap, fSum2LGap;    
+  G4double fSumLGap, fSum2LGap;
+
+  G4int nPositrons;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

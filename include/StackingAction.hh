@@ -23,52 +23,37 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file EventAction.hh
-/// \brief Definition of the EventAction class
 //
-//
-// $Id: EventAction.hh 98241 2016-07-04 16:56:59Z gcosmo $
-//
-// 
+/// \file B3/B3a/include/StackingAction.hh
+/// \brief Definition of the B3::StackingAction class
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#ifndef B3StackingAction_h
+#define B3StackingAction_h 1
 
-#ifndef EventAction_h
-#define EventAction_h 1
+#include "G4UserStackingAction.hh"
 
-#include "G4UserEventAction.hh"
-#include "globals.hh"
+#include "G4ClassificationOfNewTrack.hh"
 
+class G4Track;
 class RunAction;
-class HistoManager;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+/// Stacking action class : manage the newly generated particles
+///
+/// One wishes do not track secondary neutrino.Therefore one kills it
+/// immediately, before created particles will  put in a stack.
 
-class EventAction : public G4UserEventAction
+class StackingAction : public G4UserStackingAction
 {
-public:
-  EventAction(RunAction*, HistoManager*);
-  virtual ~EventAction() override;
+  public:
+  StackingAction(RunAction*);
+    // ~StackingAction() override = default;
 
-  virtual void  BeginOfEventAction(const G4Event*) override;
-  virtual void    EndOfEventAction(const G4Event*) override;
-    
-  void AddAbs(G4double de, G4double dl) {fEnergyAbs += de; fTrackLAbs += dl;};
-  void AddGap(G4double de, G4double dl) {fEnergyGap += de; fTrackLGap += dl;};
-    
+    G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*) override;
+
 private:
-   RunAction*    fRunAction;
-   HistoManager* fHistoManager;
-      
-   G4double  fEnergyAbs, fEnergyGap;
-   G4double  fTrackLAbs, fTrackLGap;
-                     
-   G4int     fPrintModulo;                             
+  RunAction* fRunAction;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
-    
